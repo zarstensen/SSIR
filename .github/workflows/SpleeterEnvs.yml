@@ -19,16 +19,18 @@ jobs:
             with:
                 auto-update-conda: true
                 activate-environment: "spleeter-env"
+                channels: |
+                    conda-forge
+                    default
                 python-version: 3.8
           - name: Conda Install
             run: |
-                conda install conda-pack
-                conda create -n spleeter-env -c conda-forge ffmpeg
-                conda activate spleeter-env
+                conda install ffmpeg
                 pip install spleeter==2.*
                 conda deactivate
+                conda install conda-pack
           - name: Conda Pack
-            run: conda-pack -n spleeter-env --output spleeter-env-${{ matrix.os }}.zip
+            run: conda pack -n spleeter-env --output spleeter-env-${{ matrix.os }}.zip
           - name: Retrieve Release
             id: retrieve_release
             uses: octokit/request-action@v2.x
