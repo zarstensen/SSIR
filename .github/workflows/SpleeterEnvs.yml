@@ -34,7 +34,7 @@ jobs:
                 conda install conda-pack
           - name: Conda Pack
             shell: bash -el {0}
-            run: conda pack --zip-symlinks -n spleeter-env --output spleeter-env-${{ matrix.os }}.zip
+            run: conda pack --zip-symlinks -n spleeter-env --output spleeter-env-${{ matrix.os }}.tar.gz
 
           - name: Retrieve Release
             id: retrieve_release

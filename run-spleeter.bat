@@ -11,7 +11,7 @@ cd /d %spleeter_cwd%
 IF NOT EXIST spleeter-env/NUL (
 	echo "Extracting Virtual Environment On First Run (this may take a while...)"
 	mkdir spleeter-env
-	tar -xf spleeter-env.zip -C spleeter-env
+	tar -xf spleeter-env.tar.gz -C spleeter-env
 )
 
 call ./spleeter-env/Scripts/activate.bat
