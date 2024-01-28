@@ -1,0 +1,4 @@
+conda-forge
+pyinstaller
+spleeter==2.*
+ffmpeg
