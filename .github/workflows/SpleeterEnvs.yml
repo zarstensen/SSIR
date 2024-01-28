@@ -26,8 +26,9 @@ jobs:
                 conda create -n spleeter-env -c conda-forge ffmpeg
                 conda activate spleeter-env
                 pip install spleeter==2.*
+                conda deactivate
           - name: Conda Pack
-            run: conda pack --output spleeter-env-${{ matrix.os }}.zip
+            run: conda pack -n spleeter-env --output spleeter-env-${{ matrix.os }}.zip
           - name: Retrieve Release
             id: retrieve_release
             uses: octokit/request-action@v2.x
