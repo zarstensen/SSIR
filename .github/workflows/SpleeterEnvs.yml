@@ -19,18 +19,18 @@ jobs:
             with:
                 auto-update-conda: true
                 activate-environment: "spleeter-env"
-                channels: |
-                    conda-forge
-                    default
+                channels: conda-forge
                 python-version: 3.8
           
           - name: Conda Install
+            shell: bash -el {0}
             run: |
                 conda install ffmpeg
                 pip install spleeter==2.*
                 conda deactivate
                 conda install conda-pack
           - name: Conda Pack
+            shell: bash -el {0}
             run: conda pack -n spleeter-env --output spleeter-env-${{ matrix.os }}.zip
 
           - name: Retrieve Release
@@ -45,6 +45,7 @@ jobs:
             id: upload_environment
             run: >
                 curl -L
+                -X POST
                 -T "./spleeter-env-${{ matrix.os }}.zip"
                 -H "Accept: application/vnd.github+json"
                 -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
