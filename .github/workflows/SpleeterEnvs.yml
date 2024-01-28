@@ -23,6 +23,7 @@ jobs:
                     conda-forge
                     default
                 python-version: 3.8
+          
           - name: Conda Install
             run: |
                 conda install ffmpeg
@@ -31,6 +32,7 @@ jobs:
                 conda install conda-pack
           - name: Conda Pack
             run: conda pack -n spleeter-env --output spleeter-env-${{ matrix.os }}.zip
+
           - name: Retrieve Release
             id: retrieve_release
             uses: octokit/request-action@v2.x
@@ -48,5 +50,5 @@ jobs:
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               -H "Content-Type: application/octet-stream" \
-              "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ fromJson(steps.retrieve_release.outputs.data).id }}/assets?name=spleeter-env.zip" \
+              "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ fromJson(steps.retrieve_release.outputs.data).id }}/assets?name=SpleeterEnv.zip" \
                 --data-binary "@./spleeter-env-${{ matrix.os }}.zip"
