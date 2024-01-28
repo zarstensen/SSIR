@@ -22,7 +22,9 @@ jobs:
                 python-version: 3.8
           - name: Conda Install
             run: |
-                conda install ffmpeg
+                conda install conda-pack
+                conda create -n spleeter-env -c conda-forge ffmpeg
+                conda activate spleeter-env
                 pip install spleeter==2.*
           - name: Conda Pack
             run: conda pack --output spleeter-env-${{ matrix.os }}.zip
