@@ -1,0 +1,2 @@
+---@alias MediaItem userdata
+---@alias MediaTrack userdata

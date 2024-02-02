@@ -3,6 +3,7 @@ if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 
 set spleeter_cwd=%1
 set spleeter_audio_file=%2
+set model_name=%3
 
 cd /d %spleeter_cwd%
 
@@ -14,9 +15,9 @@ IF NOT EXIST spleeter-env/NUL (
 	tar -xf spleeter-env.tar.gz -C spleeter-env
 )
 
-call ./spleeter-env/Scripts/activate.bat
+call ./spleeter-env/Scripts/activate
 
 echo on
 
-spleeter separate --verbose -o spleeter_out -p spleeter:4stems %spleeter_audio_file%
+python -m spleeter separate --verbose -o spleeter_out -p spleeter:%model_name:"=% %spleeter_audio_file%
 exit /b
