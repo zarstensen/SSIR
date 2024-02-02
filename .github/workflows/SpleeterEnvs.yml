@@ -14,10 +14,13 @@ jobs:
       
         name: Create Env (${{ matrix.os }})
         runs-on: ${{ matrix.os }}
+        if: ${{ github.ref_name.search(/v\d+.\d+.\d+-env.*/) !== -1 }}
         permissions:
             contents: write
 
         steps:
+
+
           - uses: conda-incubator/setup-miniconda@v3
             with:
                 auto-update-conda: true
