@@ -9,6 +9,13 @@
                 <source file="spleeter-env.tar.gz" platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.0-test/spleeter-env-windows-latest.tar.gz</source>
                 <source file="spleeter-env.tar.gz" platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.0-test/spleeter-env-macos-latest.tar.gz</source>
             </version>
+            <version name="0.0.2-test">
+                <source main="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.2-test/SplitStems.lua</source>
+                <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.2-test/run-spleeter.bat</source>
+                <source file="spleeter-env.tar.gz" platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.2-test/spleeter-env-ubuntu-latest.tar.gz</source>
+                <source file="spleeter-env.tar.gz" platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.2-test/spleeter-env-windows-latest.tar.gz</source>
+                <source file="spleeter-env.tar.gz" platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.2-test/spleeter-env-macos-latest.tar.gz</source>
+            </version>
         </reapack>
     </category>
 </index>
