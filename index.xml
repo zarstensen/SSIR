@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <index version="1" name="Zarstensen Scripts">
     <category name="Stem Splitter In Reaper">
-        <reapack name="SplitStems.lua" type="script">
+        <reapack name="Split Stems" type="script">
             <version name="0.0.1-test">
                 <source main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.0-test/SplitStems.lua</source>
                 <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.0-test/run-spleeter.bat</source>
             </version>
             <version name="0.0.3-test">
-                <source main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/Main.lua</source>
+                <source file="Main.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/Main.lua</source>
                 <source file="Directory.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/Directory.lua</source>
                 <source file="println.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/println.lua</source>
                 <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/SplitStems.lua</source>
