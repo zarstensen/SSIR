@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<index version="1" name="Zarstensen Scripts">
+    <category name="Stem Splitter In Reaper">
+        <reapack name="Split Stems" type="script">
+            <version name="0.0.1-test">
+                <source main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.0-test/SplitStems.lua</source>
+                <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.0-test/run-spleeter.bat</source>
+            </version>
+            <version name="0.0.3-test">
+                <source file="Main.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/Main.lua</source>
+                <source file="Directory.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/Directory.lua</source>
+                <source file="println.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/println.lua</source>
+                <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/SplitStems.lua</source>
+                <source file="SplitStemsPrompt.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/SplitStemsPrompt.lua</source>
+                <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/run-spleeter.bat</source>
+            </version>
+            <version name="0.0.6-test">
+                <source file="Main.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.6-test/Main.lua</source>
+                <source file="Directory.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.6-test/Directory.lua</source>
+                <source file="println.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.6-test/println.lua</source>
+                <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.6-test/SplitStems.lua</source>
+                <source file="SplitStemsPrompt.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.6-test/SplitStemsPrompt.lua</source>
+                <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.6-test/run-spleeter.bat</source>
+            </version>
+            <version name="0.0.7-test">
+                <source file="Run_Split_Stems.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/Run_Split_Stems.lua</source>
+                <source file="Directory.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/Directory.lua</source>
+                <source file="println.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/println.lua</source>
+                <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/SplitStems.lua</source>
+                <source file="SplitStemsPrompt.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/SplitStemsPrompt.lua</source>
+                <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/run-spleeter.bat</source>
+            </version>
+            <version name="0.0.8-test">
+                <source file="Run_Split_Stems.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.8-test/Run_Split_Stems.lua</source>
+                <source file="Directory.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.8-test/Directory.lua</source>
+                <source file="println.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.8-test/println.lua</source>
+                <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.8-test/SplitStems.lua</source>
+                <source file="SplitStemsPrompt.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.8-test/SplitStemsPrompt.lua</source>
+                <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.8-test/run-spleeter.bat</source>
+            </version>
+        </reapack>
+        <reapack name="SSIRSpleeterEnv.tar.gz" type="data">
+            <version name="0.0.1">
+                <source platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-ubuntu-latest.tar.gz</source>
+                <source platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-windows-latest.tar.gz</source>
+                <source platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-macos-latest.tar.gz</source>
+            </version>
+        </reapack>
+    </category>
+</index>
