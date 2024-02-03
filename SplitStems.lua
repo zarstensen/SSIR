@@ -9,7 +9,7 @@ local P = {}
 ---@param selected_media MediaItem 
 ---@param selected_track MediaTrack
 ---@param stems number
----@param is_16_khz number
+---@param is_16_khz boolean
 ---@return table
 function P.new(script_dir, selected_media, selected_track, stems, is_16_khz)
     local obj = {}

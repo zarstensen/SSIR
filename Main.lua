@@ -25,7 +25,10 @@ end
 -- add plugin folder to lua import search path
 
 ---@type string
-local plugin_dir = reaper.GetResourcePath() .. "/Scripts/Zarstensen Scripts/SSIR/"
+
+local _is_new_value, filename, _sectionID, _cmdID, _mode, _resolution, _val, _contextstr = reaper.get_action_context()
+
+local plugin_dir = filename:match("(.*[/\\]).*..*")
 package.path = package.path .. ";" .. plugin_dir .. "?.lua"
 
 -- import internal lua packages
@@ -38,7 +41,8 @@ local selected_media_item = reaper.GetSelectedMediaItem(0, 0)
 local selected_track = reaper.GetLastTouchedTrack()
 
 if not selected_media_item or not selected_track then
-  println("FAILURE")
+  -- 4'th bit = toggle err.
+  reaper.ShowMessageBox("You must select a media source and track!", "SSIR Script Failure", (1 << 4) | 0)
   return
 end
 
