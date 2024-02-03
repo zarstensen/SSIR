@@ -23,7 +23,7 @@
                 <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.6-test/run-spleeter.bat</source>
             </version>
             <version name="0.0.7-test">
-                <source file="Main.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/RunSplitStems.lua</source>
+                <source file="RunSplitStems.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/RunSplitStems.lua</source>
                 <source file="Directory.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/Directory.lua</source>
                 <source file="println.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/println.lua</source>
                 <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.7-test/SplitStems.lua</source>
