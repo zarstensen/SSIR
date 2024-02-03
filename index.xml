@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <index version="1" name="Zarstensen Scripts">
-    <category name="SSIR Env">
-        <reapack name="SplitStems.lua" type="script">
-            <version name="0.0.1">
-                <source file="spleeter-env.tar.gz" platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-ubuntu-latest.tar.gz</source>
-                <source file="spleeter-env.tar.gz" platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-windows-latest.tar.gz</source>
-                <source file="spleeter-env.tar.gz" platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-macos-latest.tar.gz</source>
-            </version>
-        </reapack>
-    </category>
     <category name="Stem Splitter In Reaper">
         <reapack name="SplitStems.lua" type="script">
             <version name="0.0.1-test">
@@ -22,6 +13,13 @@
                 <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/SplitStems.lua</source>
                 <source file="SplitStemsPrompt.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/SplitStemsPrompt.lua</source>
                 <source file="run-spleeter.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.3-test/run-spleeter.bat</source>
+            </version>
+        </reapack>
+        <reapack name="SSIRSpleeterEnv.tar.gz" type="data">
+            <version name="0.0.1">
+                <source platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-ubuntu-latest.tar.gz</source>
+                <source platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-windows-latest.tar.gz</source>
+                <source platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-env/spleeter-env-macos-latest.tar.gz</source>
             </version>
         </reapack>
     </category>
