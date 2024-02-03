@@ -37,12 +37,13 @@ function P:beginSplitting()
     Directory.removeContents(self.spleeter_dst_path, 1)
     Directory.removeContents(self.stem_path, 1)
 
-    reaper.ExecProcess(string.format("\"%s/run-spleeter.bat\" \"%s\" \"%s\" \"%istems%s\"",
+    reaper.ExecProcess(string.format("\"%s/run-spleeter.bat\" \"%s\" \"%s\" \"%istems%s\" \"%s\"",
     self.script_dir,
     self.script_dir,
     self.media_file,
     self.stems,
-    self.is_16_khz and "-16khz" or ""),
+    self.is_16_khz and "-16khz" or "",
+    reaper.GetResourcePath() .. '/Data/SSIRSpleeterEnv.tar.gz'),
     -2)
     
     -- periodically check if spleeter has finished, without blocking reaper.

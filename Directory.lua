@@ -30,7 +30,7 @@ function P.move(directory, dest)
         local src_file = io.open(file, 'rb')
         local dest_file = io.open(dest .. file_name, 'wb')
 
-        dest_file:write(src:read("*a"))
+        dest_file:write(src_file:read("*a"))
 
         src_file:close()
         dest_file:close()

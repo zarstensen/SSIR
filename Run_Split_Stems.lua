@@ -2,7 +2,12 @@
 
 ---@type table<string, fun(): boolean>
 local dependencies = {
-  [ '"ReaImGui"' ] = function() return true and reaper.ImGui_GetVersion or false end
+  [ '"ReaImGui"' ] = function()
+      return true and reaper.ImGui_GetVersion or false
+  end,
+  [ '"SSIRSpleeterEnv.tar.gz"' ] = function()
+      return reaper.file_exists(reaper.GetResourcePath() .. '/Data/SSIRSpleeterEnv.tar.gz')
+  end,
 }
 
 ---@type string[]
