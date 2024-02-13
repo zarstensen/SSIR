@@ -10,34 +10,44 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ "windows-latest", "macos-latest", "ubuntu-latest" ]
+                os: [ windows-latest, macos-latest, ubuntu-latest ]
+                device: [ cpu, nvidia ]
+                exclude:
+                  - os: macos-latest
+                    device: nvidia
       
-        name: Create Env (${{ matrix.os }})
+        name: Create Env (${{ matrix.os }} - ${{ matrix.device }})
         runs-on: ${{ matrix.os }}
         if: ${{ contains(github.ref_name, 'env') }}
         permissions:
             contents: write
 
         steps:
-
-
           - uses: conda-incubator/setup-miniconda@v3
             with:
                 auto-update-conda: true
-                activate-environment: "spleeter-env"
+                activate-environment: "demucs-env"
                 channels: conda-forge
                 python-version: 3.8
-          
-          - name: Conda Install
+
+          - name: Install Nvidia Packages
             shell: bash -el {0}
-            run: |
-                conda install ffmpeg
-                pip install spleeter==2.*
-                conda deactivate
-                conda install conda-pack
+            if: matrix.device == 'nvidia'
+            run: conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
+            
+
+          - name: Install General Packages
+            shell: bash -el {0}
+            run: | 
+              conda install ffmpeg
+              pip install demucs==4.*
+
           - name: Conda Pack
             shell: bash -el {0}
-            run: conda pack --zip-symlinks -n spleeter-env --output spleeter-env-${{ matrix.os }}.tar.gz
+            run: |
+              conda deactivate
+              conda install conda-pack
+              conda pack --zip-symlinks -n demucs-env --output demucs-env-${{ matrix.os }}.tar.gz
 
           - name: Retrieve Release
             id: retrieve_release
@@ -52,9 +62,9 @@ jobs:
             run: >
                 curl -L
                 -X POST
-                -T "./spleeter-env-${{ matrix.os }}.tar.gz"
+                -T "./demucs-env-${{ matrix.os }}.tar.gz"
                 -H "Accept: application/vnd.github+json"
                 -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
                 -H "X-GitHub-Api-Version: 2022-11-28"
                 -H "Content-Type: application/octet-stream"
-                "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ fromJson(steps.retrieve_release.outputs.data).id }}/assets?name=spleeter-env-${{ matrix.os }}.tar.gz"
+                "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ fromJson(steps.retrieve_release.outputs.data).id }}/assets?name=demucs-env-${{ matrix.os }}.tar.gz"
