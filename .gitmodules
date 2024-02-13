@@ -1,0 +1,3 @@
+[submodule "run_spleeter/modules/vcpkg"]
+	path = run_spleeter/modules/vcpkg
+	url = https://github.com/microsoft/vcpkg.git
