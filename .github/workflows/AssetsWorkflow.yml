@@ -19,14 +19,14 @@ jobs:
           with:
             submodules: true
       
-      - name: Configure Cmake
-        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }}/run_demucs -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
+        - name: Configure Cmake
+          run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }}/run_demucs -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
 
-      - name: Cmake Install
-        run: cmake --install ${{ github.workspace }}/build --config=Release
+        - name: Cmake Install
+          run: cmake --install ${{ github.workspace }}/build --config=Release
 
     create-env:
-      name: Create Env (${{ matrix.os }} - ${{ matrix.device }})
+      name: Create Env (${{ matrix.os }})
       runs-on: ${{ matrix.os }}
       strategy:
           fail-fast: false
