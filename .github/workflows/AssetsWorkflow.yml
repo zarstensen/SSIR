@@ -1,0 +1,80 @@
+name: Asset Workflow
+run-name: ${{ github.ref_name}} Asset Workflow
+
+on:
+    release:
+        types: [published]
+
+jobs:
+    build-run-demucs:
+      strategy:
+        fail-fast: false
+        matrix:
+          os: [ { name: windows-latest, vcpkg_triplet: x64-windows-static }, { name: macos-latest, vcpkg_triplet: x64-osx }, { name: ubuntu-latest, vcpkg_triplet: x64-linux } ]
+      name: Build Run Demucs (${{ matrix.os.name }})
+      runs-on: ${{ matrix.os.name }}
+      
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            submodules: true
+      
+      - name: Configure Cmake
+        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }}/run_demucs -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
+
+      - name: Cmake Install
+        run: cmake --install ${{ github.workspace }}/build --config=Release
+
+    create-env:
+      name: Create Env (${{ matrix.os }} - ${{ matrix.device }})
+      runs-on: ${{ matrix.os }}
+      strategy:
+          fail-fast: false
+          matrix:
+              os: [ windows-latest, macos-latest, ubuntu-latest ]
+      steps:
+        - uses: conda-incubator/setup-miniconda@v3
+          with:
+              auto-update-conda: true
+              activate-environment: "demucs_env"
+              channels: conda-forge
+              python-version: 3.8
+        
+        - name: Conda Pack
+          shell: bash -el {0}
+          run: |
+            conda deactivate
+            conda install conda-pack
+            conda pack --zip-symlinks -n demucs-env --output demucs_env_${{ matrix.os }}.tar.gz
+
+    upload-assets:
+      name: Upload Assets
+      needs: [ build-run-demucs, create-env ]
+      strategy:
+        fail-fast: false
+        matrix:
+            os: [ windows-latest, macos-latest, ubuntu-latest ]
+        permissions:
+          contents: write
+        steps:
+          - name: Retrieve Release
+            id: retrieve_release
+            uses: octokit/request-action@v2.x
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            with:
+                route: GET /repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}
+      
+          - name: Upload Environment
+            id: upload_environment
+            uses: actions/upload-artifact@v4
+            with:
+              name: demucs_env_${{matrix.os}}.tar.gz
+              path: demucs_env_${{matrix.os}}.tar.gz
+
+          - name: Upload Run Demucs
+            id: upload_rundemucs
+            uses: actions/upload-artifact@v4
+            with:
+              name: run_demucs_${{matrix.os}}
+              path: ${{ github.workspace }}/install/run_demucs_${{matrix.os}}.*

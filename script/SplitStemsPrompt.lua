@@ -4,43 +4,104 @@ for name, func in pairs(reaper) do
   if name then ImGui[name] = func end
 end
 
+local cache_file = "prompt_cache.txt"
 
 --- Static class representing a Split Stems prompt.
 ---@class SplitStemsPrompt
 local P = {
 
-    STEMS_OPTIONS = {
-        "2 Stems (vocals, accompaniment)",
-        "4 Stems (vocals, bass, drums, other)",
-        "5 Stems (vocals, drums, bass, piano, other)",
+    MODEL_OPTIONS = {
+        "htdemucs (4 stems)",
+        "htdemucs_ft (better quality than htdemucs, 4x as slow)",
+        "htdemucs_6s (6 stems)",
+        "htdemucs_mmi (newer model)",
+        "mdx (MusDB dataset)",
+        "mdx_extra (MusDB + training dataset)",
+        "mdx_q (smaller version of mdx)",
+        "mdx_extra_q (smaller version of mdx_extra)"
     },
 
-    STEMS_VALUES = {
-        [0] = 2,
-        [1] = 4,
-        [2] = 5,
+    MODEL_VALUES = {
+        [0] = "htdemucs",
+        [1] = "htdemucs_ft",
+        [2] = "htdemucs_6s",
+        [3] = "htdemucs_mmi",
+        [4] = "mdx",
+        [5] = "mdx_extra",
+        [6] = "mdx_q",
+        [7] = "mdx_extra_q"
     },
 
-    FREQ_OPTIONS = {
-        "11 Khz",
-        "16 Khz",
+    DEVICE_OPTIONS = {
+        "CPU (slow, works on all hardware)",
+        "Nvidia GPU (fast, only on nvidia hardware)",
     },
 
-    IS_16KHZ_VALUES = {
-        [0] = false,
-        [1] = true,
+    DEVICE_VALUES = {
+        [0] = "cpu",
+        [1] = "nvidia",
     },
 
-    ---@type fun(stems: number, is_16_khz: boolean) | nil
+    ---@type fun(model: string, device: string) | nil
     SPLIT_STEMS_CALLBACK = nil,
+
+    ---@type string
+    SCRIPT_DIR = nil,
 }
+
+function P.loadCache()
+
+    if not P.SCRIPT_DIR then
+        return
+    end
+
+    local f = io.open(P.SCRIPT_DIR .. '/' .. cache_file, "r")
+
+    if f == nil then
+        return
+    end
+
+    local line = f:read("l")
+
+    while line do
+
+        local prop, val = line:match("%s*(.*)%s*=%s*(%d*)%s*")
+
+        P[prop] = val
+
+        line = f:read("l")
+    end
+
+    f:close()
+end
+
+function P.saveCache()
+
+    if not P.SCRIPT_DIR then
+        return
+    end
+
+    local f = io.open(P.SCRIPT_DIR .. '/' .. cache_file, "w")
+
+    if not f then
+        return
+    end
+
+    local cached_properties = { "model_value_index", "device_value_index" }
+
+    for _, prop in ipairs(cached_properties) do
+        f:write(prop .. "=" .. P[prop] .. '\n')
+    end
+
+    f:close()
+end
 
 --- Show the ImGui window, and prompt the user for stem and frequency selection.
 function P.show()
-
+    P.loadCache()
     P.ctx = ImGui.CreateContext("Zarstensen Scripts SSIR Prompt")
 
-    ImGui.SetNextWindowSize(P.ctx, 400, 400, ImGui.Cond_FirstUseEver())
+    ImGui.SetNextWindowSize(P.ctx, 300, 135, ImGui.Cond_Once())
     reaper.defer(P.guiLoop)
 end
 
@@ -71,7 +132,7 @@ end
 --- Main loop drawing the imgui window.
 function P.guiLoop()
     ---@type boolean, boolean
-    local visible, open = ImGui.Begin(P.ctx, "ImGui Window", true)
+    local visible, open = ImGui.Begin(P.ctx, "Split Stems", true)
 
     if not open then
         ImGui.End(P.ctx)
@@ -83,8 +144,10 @@ function P.guiLoop()
         return
     end
 
-    P.stems_value_index = Combo('Stems', P.STEMS_OPTIONS, P.stems_value_index)
-    P.freq_value_index = Combo('Max Freq', P.FREQ_OPTIONS, P.freq_value_index)
+    P.model_value_index = Combo('Model', P.MODEL_OPTIONS, P.model_value_index)
+    P.device_value_index = Combo('Device', P.DEVICE_OPTIONS, P.device_value_index)
+
+    P.saveCache()
 
     ImGui.NewLine(P.ctx)
     ImGui.NewLine(P.ctx)
@@ -105,9 +168,10 @@ function P.guiLoop()
     end
 
     if split_stems_clicked and P.SPLIT_STEMS_CALLBACK then
-        reaper.defer(function() P.SPLIT_STEMS_CALLBACK(P.STEMS_VALUES[P.stems_value_index], P.IS_16KHZ_VALUES[P.freq_value_index]) end)
+        reaper.defer(function() P.SPLIT_STEMS_CALLBACK(P.MODEL_VALUES[P.model_value_index], P.DEVICE_VALUES[P.device_value_index]) end)
         return
     end
+
 
     reaper.defer(P.guiLoop)
 end

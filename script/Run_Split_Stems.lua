@@ -4,10 +4,7 @@
 local dependencies = {
   [ '"ReaImGui"' ] = function()
       return true and reaper.ImGui_GetVersion or false
-  end,
-  [ '"SSIRSpleeterEnv.tar.gz"' ] = function()
-      return reaper.file_exists(reaper.GetResourcePath() .. '/Data/SSIRSpleeterEnv.tar.gz')
-  end,
+  end
 }
 
 ---@type string[]
@@ -33,8 +30,8 @@ end
 
 local _is_new_value, filename, _sectionID, _cmdID, _mode, _resolution, _val, _contextstr = reaper.get_action_context()
 
-local plugin_dir = filename:match("(.*[/\\]).*..*")
-package.path = package.path .. ";" .. plugin_dir .. "?.lua"
+local plugin_dir = filename:match("(.*)[/\\].*..*")
+package.path = package.path .. ";" .. plugin_dir .. "/?.lua"
 
 -- import internal lua packages
 
@@ -51,8 +48,9 @@ if not selected_media_item or not selected_track then
   return
 end
 
-SplitStemsPrompt.SPLIT_STEMS_CALLBACK = function(stems, is_16_khz)
-  local split_stems = SplitStems.new(plugin_dir, selected_media_item, selected_track, stems, is_16_khz)
+SplitStemsPrompt.SCRIPT_DIR = plugin_dir
+SplitStemsPrompt.SPLIT_STEMS_CALLBACK = function(model, device)
+  local split_stems = SplitStems.new(plugin_dir, selected_media_item, selected_track, model, device)
   split_stems:beginSplitting()
 end
 
