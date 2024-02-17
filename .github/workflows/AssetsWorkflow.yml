@@ -54,27 +54,28 @@ jobs:
         fail-fast: false
         matrix:
             os: [ windows-latest, macos-latest, ubuntu-latest ]
-        permissions:
-          contents: write
-        steps:
-          - name: Retrieve Release
-            id: retrieve_release
-            uses: octokit/request-action@v2.x
-            env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            with:
-                route: GET /repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}
-      
-          - name: Upload Environment
-            id: upload_environment
-            uses: actions/upload-artifact@v4
-            with:
-              name: demucs_env_${{matrix.os}}.tar.gz
-              path: demucs_env_${{matrix.os}}.tar.gz
+      runs-on: ${{ matrix.os }}
+      permissions:
+        contents: write
+      steps:
+        - name: Retrieve Release
+          id: retrieve_release
+          uses: octokit/request-action@v2.x
+          env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+              route: GET /repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}
+    
+        - name: Upload Environment
+          id: upload_environment
+          uses: actions/upload-artifact@v4
+          with:
+            name: demucs_env_${{matrix.os}}.tar.gz
+            path: demucs_env_${{matrix.os}}.tar.gz
 
-          - name: Upload Run Demucs
-            id: upload_rundemucs
-            uses: actions/upload-artifact@v4
-            with:
-              name: run_demucs_${{matrix.os}}
-              path: ${{ github.workspace }}/install/run_demucs_${{matrix.os}}.*
+        - name: Upload Run Demucs
+          id: upload_rundemucs
+          uses: actions/upload-artifact@v4
+          with:
+            name: run_demucs_${{matrix.os}}
+            path: ${{ github.workspace }}/install/run_demucs_${{matrix.os}}.*
