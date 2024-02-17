@@ -45,7 +45,7 @@ jobs:
           run: |
             conda deactivate
             conda install conda-pack
-            conda pack --zip-symlinks -n demucs-env --output demucs_env_${{ matrix.os }}.tar.gz
+            conda pack --zip-symlinks -n demucs_env --output demucs_env_${{ matrix.os }}.tar.gz
 
     upload-assets:
       name: Upload Assets
