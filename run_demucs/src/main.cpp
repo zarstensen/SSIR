@@ -7,7 +7,7 @@
 
 
 #include <filesystem>
-#include <format>
+#include <fmt/format.h>
 #include <fstream>
 #include <thread>
 
@@ -63,7 +63,7 @@ void runDemucs(std::string_view audio_file, std::string_view model, std::string_
 
 	// run demucs
 
-	int res = system(std::format("run-demucs \"{}\" {} \"{}\" {} \"{}\"",
+	int res = system(fmt::format("run-demucs \"{}\" {} \"{}\" {} \"{}\"",
 		env,
 		demucs_device,
 		audio_file,

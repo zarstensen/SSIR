@@ -43,3 +43,8 @@ install(TARGETS ${PROJECT_NAME}
 
 find_package(asio CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE asio::asio)
+
+#fmt
+
+find_package(fmt CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
