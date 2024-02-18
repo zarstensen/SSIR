@@ -22,7 +22,7 @@ jobs:
           submodules: true
     
       - name: Cmake Configure 
-        run: cmake -B build -S run_demucs DBINARY_SUFFIX="_${{ matrix.os.name }}" -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
+        run: cmake -B build -S run_demucs -DBINARY_SUFFIX="_${{ matrix.os.name }}" -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
 
       - name: Cmake Build
         run: cmake --build build --config Release
