@@ -21,8 +21,11 @@ jobs:
         with:
           submodules: true
     
-      - name: Configure Cmake
+      - name: Cmake Configure 
         run: cmake -B build -S run_demucs -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
+
+      - name: Cmake Build
+        run: cmake --build build --config Release
 
       - name: Cmake Install
         run: cmake --install build --config=Release
@@ -61,7 +64,7 @@ jobs:
 
   create-release:
     name: create-release
-    needs: [ create-conda-env ]
+    needs: [ create-conda-env, build-run-demucs ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -87,7 +90,7 @@ jobs:
         with:
           artifacts: artifacts/*
           body: |
-            # Release ${{ github.ref }}
+            # Release ${{ github.ref_name }}
 
             ${{ github.event.head_commit.message }}
 
