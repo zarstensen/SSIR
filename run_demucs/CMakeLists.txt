@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/modules/vcpkg/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "Vcpkg toolchain file")
 
-option(BINARY_SUFFIX "String to append to end of binary file" "")
+set(BINARY_SUFFIX "" CACHE STRING "String to append to end of binary file")
 
 project("run_demucs" LANGUAGES C CXX)
 
@@ -31,7 +31,9 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}${BINARY_SUFFIX}" SUFFIX ".exe")
+if(${BINARY_SUFFIX})
+        set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}${BINARY_SUFFIX}" SUFFIX ".exe")
+endif()
 
 # libarchive
 
