@@ -1,8 +1,3 @@
-spleeter-env
-spleeter-env.tar.gz
-spleeter_out
-pretrained_models
-
 build/
 CONDA_ENV/
 vcpkg_installed/

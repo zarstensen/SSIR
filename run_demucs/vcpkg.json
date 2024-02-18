@@ -2,6 +2,8 @@
     "name": "run-spleeter",
     "version": "1.0",
     "dependencies": [
+      "asio",
+      "fmt",
       "libarchive",
       "zlib"
     ]

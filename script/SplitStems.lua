@@ -1,4 +1,7 @@
 local Directory = require 'Directory'
+local println = require 'println'
+
+local tcp_port_file = "tcp_port.txt"
 
 --- Class responsible for splitting a media source into it stems using spleeter, and inserting them back into reaper.
 ---@class SplitStems
@@ -8,10 +11,10 @@ local P = {}
 ---@param script_dir string directory to place any downloaded models and temporarily store extracted stems.
 ---@param selected_media MediaItem 
 ---@param selected_track MediaTrack
----@param stems number
----@param is_16_khz boolean
+---@param model string
+---@param device string
 ---@return table
-function P.new(script_dir, selected_media, selected_track, stems, is_16_khz)
+function P.new(script_dir, selected_media, selected_track, model, device)
     local obj = {}
     P.__index = P
     setmetatable(obj, P)
@@ -19,12 +22,13 @@ function P.new(script_dir, selected_media, selected_track, stems, is_16_khz)
     obj.script_dir = script_dir
     obj.selected_media = selected_media
     obj.selected_track = selected_track
-    obj.stems = stems
-    obj.is_16_khz = is_16_khz
+    obj.model = model
+    obj.device = device
+
+    obj.port = nil
 
     obj.media_file = reaper.GetMediaSourceFileName(reaper.GetMediaItemTake_Source(reaper.GetMediaItemTake(obj.selected_media, 0)))
-    obj.spleeter_dst_path = obj.script_dir .. 'spleeter_out/' .. obj.media_file:match([[.*\(.*)%..*]]) .. '/'
-    obj.stem_path = reaper.GetProjectPath() .. '/' .. obj.media_file:match([[.*\(.*)%..*]]) .. '/'
+    obj.stem_path = reaper.GetProjectPath() .. '/separated/' .. obj.model .. '/' .. obj.media_file:match([[.*\(.*)%..*]]) .. '/'
 
     return obj
 end
@@ -33,37 +37,75 @@ end
 function P:beginSplitting()
 
     -- make sure any previous stems are removed, as we use this for checking when spleeter has finished processing.
+    
+    -- refresh cache
 
-    Directory.removeContents(self.spleeter_dst_path, 1)
-    Directory.removeContents(self.stem_path, 1)
+    reaper.EnumerateFiles(self.stem_path, -1)
+    reaper.EnumerateSubdirectories(self.stem_path, -1)
 
-    reaper.ExecProcess(string.format("\"%s/run-spleeter.bat\" \"%s\" \"%s\" \"%istems%s\" \"%s\"",
+    -- remove all files in current directory
+
+    local file_index = 0
+
+    while reaper.EnumerateFiles(self.stem_path, file_index) do
+        local file = reaper.EnumerateFiles(self.stem_path, file_index)
+        os.remove(self.stem_path .. file)
+        file_index = file_index + 1
+    end
+
+
+    local tcp_port_file_path = self.script_dir .. '/' .. tcp_port_file
+
+    -- remove previous tcp port file in case it was not removed.
+    os.remove(tcp_port_file_path)
+
+    reaper.ExecProcess(string.format("\"%s/run_demucs\" \"%s\" begin \"%s\" %s %s \"%s\" \"%s\"",
     self.script_dir,
     self.script_dir,
     self.media_file,
-    self.stems,
-    self.is_16_khz and "-16khz" or "",
-    reaper.GetResourcePath() .. '/Data/SSIRSpleeterEnv.tar.gz'),
+    self.model,
+    self.device,
+    self.script_dir .. '/' .. 'demucs_env.tar.gz',
+    reaper.GetProjectPath() .. '/separated'),
     -2)
     
+    -- wait until port has been written to disk, so we know where the tcp server is hosted at.
+
+    while not self.port do
+        local f = io.open(tcp_port_file_path)
+        
+        if f then
+            self.port = f:read("l")
+            f:close()
+            os.remove(tcp_port_file_path)
+        end
+    end
+
     -- periodically check if spleeter has finished, without blocking reaper.
     reaper.defer(function() self:waitForSplitEnd() end)
 end
 
 function P:waitForSplitEnd()
-    reaper.EnumerateFiles(self.spleeter_dst_path, -1)
-  
-    -- stem files have not yet been created
-    if not reaper.EnumerateFiles(self.spleeter_dst_path, self.stems - 1) then
-      reaper.defer(function() self:waitForSplitEnd() end)
-      return
+
+    local ret = reaper.ExecProcess(string.format("\"%s/run_demucs\" \"%s\" check %s",
+        self.script_dir,
+        self.script_dir,
+        self.port),
+        0)
+    
+    ret = tonumber(ret:match("(%d+)%c+.*"))
+
+    if ret == 0 then
+        reaper.defer(function() self:waitForSplitEnd() end)
+        return
     end
-    -- wait a bit, to make sure the files have finished writing to disk.
 
-    local wait_s = os.clock() + 1
-    while (os.clock() < wait_s) do end
+    if ret ~= 1 then
+        println("ERROR: ", ret)
+        return
+    end
 
-    -- files exist at this point
+    println("WE DIT ID!!!")
 
     reaper.defer(function() self:importStemTracks() end)
 end
@@ -74,11 +116,8 @@ end
 --- new stems are placed in a folder named after the originally selected track,
 --- where each track in the folder is a stem from the original media item.
 function P:importStemTracks()
-    -- move split stems to project folder
-    Directory.move(self.spleeter_dst_path, reaper.GetProjectPath())
-
     reaper.SetMediaItemInfo_Value(self.selected_media, "B_MUTE", 1)
-
+    println(self.stem_path)
 
     -- create top level folder track
 

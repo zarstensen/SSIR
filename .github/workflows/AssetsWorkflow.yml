@@ -1,0 +1,97 @@
+name: Asset Workflow
+run-name: ${{ github.ref_name}} Asset Workflow
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-run-demucs:
+    name: Build Run Demucs (${{ matrix.os.name }})
+    runs-on: ${{ matrix.os.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ { name: windows-latest, vcpkg_triplet: x64-windows-static }, { name: macos-latest, vcpkg_triplet: x64-osx }, { name: ubuntu-latest, vcpkg_triplet: x64-linux } ]
+    
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+    
+      - name: Cmake Configure 
+        run: cmake -B build -S run_demucs -DBINARY_SUFFIX="_${{ matrix.os.name }}" -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
+
+      - name: Cmake Build
+        run: cmake --build build --config Release
+
+      - name: Cmake Install
+        run: cmake --install build --config=Release
+
+      - name: Upload Asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: run_demucs_${{matrix.os.name}}
+          path: build/install/run_demucs_${{ matrix.os.name }}*
+
+  create-conda-env:
+    name: Create Conda Env
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+            auto-update-conda: true
+            activate-environment: "demucs_env"
+            channels: conda-forge
+            python-version: 3.8
+      
+      - name: Conda Pack
+        shell: bash -el {0}
+        run: |
+          conda deactivate
+          conda install conda-pack
+          conda pack --zip-symlinks -n demucs_env --output demucs_env.tar.gz
+      
+      - name: Upload Asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: demucs_env
+          path: demucs_env.tar.gz
+
+  create-release:
+    name: create-release
+    needs: [ create-conda-env, build-run-demucs ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Download Demucs Env Asset
+        uses: actions/download-artifact@v4
+        with:
+          name: demucs_env
+          path: artifacts
+
+
+      - name: Download Run Demucs Asset
+        uses: actions/download-artifact@v4
+        with:
+          pattern: run_demucs_*
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: artifacts/*
+          body: |
+            # Release ${{ github.ref_name }}
+
+            ${{ github.event.head_commit.message }}
+
+          draft: true
