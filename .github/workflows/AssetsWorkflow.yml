@@ -78,7 +78,7 @@ jobs:
       - name: Download Demucs Env Asset
         uses: actions/download-artifact@v4
         with:
-          name: demucs_env_*
+          pattern: demucs_env_*
           path: artifacts
           merge-multiple: true
 
