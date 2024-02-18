@@ -38,7 +38,11 @@ jobs:
 
   create-conda-env:
     name: Create Conda Env
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
 
     steps:
 
@@ -54,13 +58,13 @@ jobs:
         run: |
           conda deactivate
           conda install conda-pack
-          conda pack --zip-symlinks -n demucs_env --output demucs_env.tar.gz
+          conda pack --zip-symlinks -n demucs_env --output demucs_env_${{matrix.os}}.tar.gz
       
       - name: Upload Asset
         uses: actions/upload-artifact@v4
         with:
-          name: demucs_env
-          path: demucs_env.tar.gz
+          name: demucs_env_${{matrix.os}}
+          path: demucs_env_${{matrix.os}}.tar.gz
 
   create-release:
     name: create-release
@@ -74,8 +78,9 @@ jobs:
       - name: Download Demucs Env Asset
         uses: actions/download-artifact@v4
         with:
-          name: demucs_env
+          name: demucs_env_*
           path: artifacts
+          merge-multiple: true
 
 
       - name: Download Run Demucs Asset
