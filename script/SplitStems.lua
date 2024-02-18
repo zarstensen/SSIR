@@ -1,4 +1,3 @@
-local Directory = require 'Directory'
 local println = require 'println'
 
 local tcp_port_file = "tcp_port.txt"
