@@ -28,7 +28,6 @@ function P.new(script_dir, selected_media, selected_track, model, device)
     obj.port = nil
 
     obj.media_file = reaper.GetMediaSourceFileName(reaper.GetMediaItemTake_Source(reaper.GetMediaItemTake(obj.selected_media, 0)))
-    obj.spleeter_dst_path = obj.script_dir .. 'spleeter_out/' .. obj.media_file:match([[.*\(.*)%..*]]) .. '/'
     obj.stem_path = reaper.GetProjectPath() .. '/separated/' .. obj.model .. '/' .. obj.media_file:match([[.*\(.*)%..*]]) .. '/'
 
     return obj
@@ -38,9 +37,21 @@ end
 function P:beginSplitting()
 
     -- make sure any previous stems are removed, as we use this for checking when spleeter has finished processing.
+    
+    -- refresh cache
 
-    Directory.removeContents(self.spleeter_dst_path, 1)
-    Directory.removeContents(self.stem_path, 1)
+    reaper.EnumerateFiles(self.stem_path, -1)
+    reaper.EnumerateSubdirectories(self.stem_path, -1)
+
+    -- remove all files in current directory
+
+    local file_index = 0
+
+    while reaper.EnumerateFiles(self.stem_path, file_index) do
+        local file = reaper.EnumerateFiles(self.stem_path, file_index)
+        os.remove(self.stem_path .. file)
+        file_index = file_index + 1
+    end
 
 
     local tcp_port_file_path = self.script_dir .. '/' .. tcp_port_file
