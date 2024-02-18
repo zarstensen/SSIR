@@ -32,7 +32,7 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 if(${BINARY_SUFFIX})
-        set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}${BINARY_SUFFIX}" SUFFIX ".exe")
+        set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}${BINARY_SUFFIX}")
 endif()
 
 # libarchive
