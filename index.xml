@@ -67,6 +67,29 @@
                 <source file="run_demucs" platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.3-a/run_demucs_macos-latest</source>
                 <source file="run_demucs" platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.3-a/run_demucs_ubuntu-latest</source>
             </version>
+            <version name="0.0.4-a">
+                <source file="Run_Split_Stems.lua" main="main">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/script/Run_Split_Stems.lua</source>
+                <source file="println.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/script/println.lua</source>
+                <source file="SplitStems.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/script/SplitStems.lua</source>
+                <source file="SplitStemsPrompt.lua">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/script/SplitStemsPrompt.lua</source>
+
+                <source file="install-demucs-nvidia.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/run_demucs/script/install-demucs-nvidia.bat</source>
+                <source file="install-demucs-nvidia.sh">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/run_demucs/script/install-demucs-nvidia.sh</source>
+
+                <source file="install-demucs.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/run_demucs/script/install-demucs.bat</source>
+                <source file="install-demucs.sh">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/run_demucs/script/install-demucs.sh</source>
+
+                <source file="run-demucs.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/run_demucs/script/run-demucs.bat</source>
+                <source file="run-demucs.sh">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.4-a/run_demucs/script/run-demucs.sh</source>
+
+                <source file="demucs_env.tar.gz" platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.4-a/demucs_env_windows-latest.tar.gz</source>
+                <source file="demucs_env.tar.gz" platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.4-a/demucs_env_macos-latest.tar.gz</source>
+                <source file="demucs_env.tar.gz" platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.4-a/demucs_env_linux-latest.tar.gz</source>
+
+                <source file="run_demucs.exe" platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.4-a/run_demucs_windows-latest.exe</source>
+                <source file="run_demucs" platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.4-a/run_demucs_macos-latest</source>
+                <source file="run_demucs" platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.4-a/run_demucs_ubuntu-latest</source>
+            </version>
         </reapack>
     </category>
 </index>
