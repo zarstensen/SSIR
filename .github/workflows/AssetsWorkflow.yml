@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: run_demucs_${{matrix.os.name}}
-          path: build/install/run_demucs_${{ matrix.os.name}}.*
+          path: build/install/run_demucs*
 
   create-conda-env:
     name: Create Conda Env
