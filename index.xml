@@ -17,11 +17,11 @@
                 <source file="run-demucs.bat">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.1-a/run_demucs/script/run-demucs.bat</source>
                 <source file="run-demucs.sh">https://raw.githubusercontent.com/zarstensen/SSIR/v0.0.1-a/run_demucs/script/run-demucs.sh</source>
 
-                <source file="demucs_env.tar.gz">https://raw.githubusercontent.com/zarstensen/SSIR/releases/download/v0.0.1-a/demucs_env.tar.gz</source>
+                <source file="demucs_env.tar.gz">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-a/demucs_env.tar.gz</source>
 
-                <source file="run_spleeter.exe" platform="windows">https://raw.githubusercontent.com/zarstensen/SSIR/releases/download/v0.0.1-a/run_spleeter_windows-latest.exe</source>
-                <source file="run_spleeter" platform="darwin">https://raw.githubusercontent.com/zarstensen/SSIR/releases/download/v0.0.1-a/run_spleeter_macos-latest</source>
-                <source file="run_spleeter" platform="linux">https://raw.githubusercontent.com/zarstensen/SSIR/releases/download/v0.0.1-a/run_spleeter_ubuntu-latest</source>
+                <source file="run_spleeter.exe" platform="windows">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-a/run_spleeter_windows-latest.exe</source>
+                <source file="run_spleeter" platform="darwin">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-a/run_spleeter_macos-latest</source>
+                <source file="run_spleeter" platform="linux">https://github.com/zarstensen/SSIR/releases/download/v0.0.1-a/run_spleeter_ubuntu-latest</source>
 
 
             </version>
