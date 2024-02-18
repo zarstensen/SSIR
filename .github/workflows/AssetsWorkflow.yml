@@ -22,19 +22,22 @@ jobs:
           submodules: true
     
       - name: Cmake Configure 
-        run: cmake -B build -S run_demucs -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
+        run: cmake -B build -S run_demucs DBINARY_SUFFIX="_${{ matrix.os.name }}"" -DCMAKE_BUILD_TYPE=Release -DVCPKG_TARGET_TRIPLET=${{ matrix.os.vcpkg_triplet }}
 
       - name: Cmake Build
         run: cmake --build build --config Release
 
       - name: Cmake Install
         run: cmake --install build --config=Release
+      
+      - name: Rename Binary
+        run: mv build/install/run_demucs
 
       - name: Upload Asset
         uses: actions/upload-artifact@v4
         with:
           name: run_demucs_${{matrix.os.name}}
-          path: build/install/run_demucs*
+          path: build/install/run_demucs_${{ matrix.os.name }}*
 
   create-conda-env:
     name: Create Conda Env
